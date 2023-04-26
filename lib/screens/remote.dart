@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -21,8 +20,8 @@ class _RemoteScreenState extends State<RemoteScreen> {
 
     if (x == 0 && y == 0) return;
 
-    widget.socket
-        .add(Message('uinput:cursor_move', CursorMove(x, y)).toBytes());
+    final message = Message('uinput:cursor_move', CursorMove(x, y));
+    widget.socket.add(message.toBytes());
     await widget.socket.flush();
   }
 
