@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:linux_remote_app/models/cursor_move.dart';
+import 'package:linux_remote_app/models/message.dart';
 
 class RemoteScreen extends StatefulWidget {
   final Socket socket;
@@ -19,14 +21,14 @@ class _RemoteScreenState extends State<RemoteScreen> {
 
     if (x == 0 && y == 0) return;
 
-    widget.socket.add(utf8.encode(
-        '{"target": "uinput:cursor", "payload": {"x": $x, "y": $y}}\n'));
+    widget.socket
+        .add(Message('uinput:cursor_move', CursorMove(x, y)).toBytes());
     await widget.socket.flush();
   }
 
   void onClick() async {
-    widget.socket.add(utf8.encode(
-        '{"target": "uinput:keyboard ", "payload": {"key": ${0x110}}}\n'));
+    const message = Message('uinput:key_press', 0x110);
+    widget.socket.add(message.toBytes());
     await widget.socket.flush();
   }
 
