@@ -19,14 +19,14 @@ class _RemoteScreenState extends State<RemoteScreen> {
 
     if (x == 0 && y == 0) return;
 
-    widget.socket.add(
-        utf8.encode('{"action": ${0x1}, "payload": {"x": $x, "y": $y}}\n'));
+    widget.socket.add(utf8.encode(
+        '{"target": "uinput:cursor", "payload": {"x": $x, "y": $y}}\n'));
     await widget.socket.flush();
   }
 
   void onClick() async {
-    widget.socket
-        .add(utf8.encode('{"action": ${0x2}, "payload": {"key": ${0x110}}}\n'));
+    widget.socket.add(utf8.encode(
+        '{"target": "uinput:keyboard ", "payload": {"key": ${0x110}}}\n'));
     await widget.socket.flush();
   }
 
