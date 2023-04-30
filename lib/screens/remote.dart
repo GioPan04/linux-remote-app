@@ -1,45 +1,41 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linux_remote_app/models/cursor_move.dart';
 import 'package:linux_remote_app/models/message.dart';
+import 'package:linux_remote_app/providers/providers.dart';
+import 'package:linux_remote_app/providers/socket_provider.dart';
 
-class RemoteScreen extends StatefulWidget {
-  final Socket socket;
+class RemoteScreen extends ConsumerWidget {
+  const RemoteScreen({super.key});
 
-  const RemoteScreen({required this.socket, super.key});
-
-  @override
-  State<RemoteScreen> createState() => _RemoteScreenState();
-}
-
-class _RemoteScreenState extends State<RemoteScreen> {
-  void onSwipe(DragUpdateDetails details) async {
+  void onSwipe(DragUpdateDetails details, SocketNotifier socket) async {
     final int x = (details.delta.dx * 1.5).toInt();
     final int y = (details.delta.dy * 1.5).toInt();
 
     if (x == 0 && y == 0) return;
 
     final message = Message('uinput:cursor_move', CursorMove(x, y));
-    widget.socket.add(message.toBytes());
-    await widget.socket.flush();
+    socket.sendMessage(message);
   }
 
-  void onClick() async {
+  void onClick(SocketNotifier socket) async {
     const message = Message('uinput:key_press', 0x110);
-    widget.socket.add(message.toBytes());
-    await widget.socket.flush();
+    socket.sendMessage(message);
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final socketNotifier = ref.read(socketProvider.notifier);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Remote control"),
       ),
       body: GestureDetector(
-        onPanUpdate: onSwipe,
-        onTap: onClick,
+        onPanUpdate: (details) => onSwipe(details, socketNotifier),
+        onTap: () => onClick(socketNotifier),
         child: Container(
           color: Colors.transparent,
           child: const Center(

@@ -1,39 +1,42 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:linux_remote_app/components/custom_text_input.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:linux_remote_app/providers/providers.dart';
 import 'package:linux_remote_app/screens/remote.dart';
+import 'package:linux_remote_app/screens/splash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final Socket socket = await Socket.connect('desktop.pangio.lan', 1234);
-
-  runApp(MyApp(socket));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final Socket socket;
-
-  const MyApp(this.socket, {super.key});
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return ProviderScope(
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        navigatorKey: navigatorKey,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const SplashScreen(),
+          '/home': (context) => const Home(),
+          '/mouse': (context) => const RemoteScreen()
+        },
       ),
-      home: Home(socket),
     );
   }
 }
 
 class Home extends StatefulWidget {
-  final Socket socket;
-
-  const Home(this.socket, {super.key});
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
@@ -80,12 +83,8 @@ class _HomeState extends State<Home> {
         children: [
           ListTile(
             title: const Text("Remote control"),
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => RemoteScreen(socket: widget.socket),
-              ),
-            ),
-          )
+            onTap: () => Navigator.of(context).pushNamed('/mouse'),
+          ),
         ],
       ),
     );
