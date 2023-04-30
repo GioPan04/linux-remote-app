@@ -31,5 +31,5 @@ class Message {
 }
 
 abstract class MessagePayload {
-  Map<String, dynamic> toJson();
+  Map<String, dynamic>? toJson();
 }

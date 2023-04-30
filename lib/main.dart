@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linux_remote_app/providers/providers.dart';
+import 'package:linux_remote_app/screens/player.dart';
 import 'package:linux_remote_app/screens/remote.dart';
 import 'package:linux_remote_app/screens/splash.dart';
 
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => const SplashScreen(),
           '/home': (context) => const Home(),
-          '/mouse': (context) => const RemoteScreen()
+          '/mouse': (context) => const RemoteScreen(),
+          '/player': (context) => const PlayerScreen()
         },
       ),
     );
@@ -83,6 +85,10 @@ class _HomeState extends State<Home> {
           ListTile(
             title: const Text("Remote control"),
             onTap: () => Navigator.of(context).pushNamed('/mouse'),
+          ),
+          ListTile(
+            title: const Text("Player"),
+            onTap: () => Navigator.of(context).pushNamed('/player'),
           ),
         ],
       ),
