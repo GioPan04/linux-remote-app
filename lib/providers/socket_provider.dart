@@ -19,7 +19,10 @@ class SocketNotifier extends StateNotifier<Socket?> {
     }
   }
 
-  void _onMessage(List<int> event) {}
+  void _onMessage(List<int> event) {
+    final Message message = Message.fromBytes(event);
+    print("target: ${message.target}: ${message.payload}");
+  }
 
   Future<void> sendMessage(Message message) {
     if (state == null) return Future.value();

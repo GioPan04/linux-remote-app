@@ -10,6 +10,11 @@ class Message {
     return Message(data['target'], data['payload']);
   }
 
+  factory Message.fromBytes(List<int> data) {
+    final string = String.fromCharCodes(data).trim();
+    return Message.fromJson(jsonDecode(string));
+  }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = {'target': target};
 
