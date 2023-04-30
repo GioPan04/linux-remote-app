@@ -7,7 +7,9 @@ import 'package:linux_remote_app/providers/socket_provider.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-final playerProvider = StateProvider<PlayerState>((ref) => PlayerState());
+final playerProvider = StateNotifierProvider<PlayerNotifier, PlayerState>(
+  (ref) => PlayerNotifier(ref),
+);
 final socketProvider = StateNotifierProvider<SocketNotifier, Socket?>(
   (ref) => SocketNotifier(ref: ref, navigatorKey: navigatorKey),
 );

@@ -4,7 +4,7 @@ class Message {
   final String target;
   final dynamic payload;
 
-  const Message(this.target, this.payload);
+  const Message(this.target, [this.payload]);
 
   factory Message.fromJson(Map<String, dynamic> data) {
     return Message(data['target'], data['payload']);

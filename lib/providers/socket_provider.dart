@@ -29,28 +29,9 @@ class SocketNotifier extends StateNotifier<Socket?> {
   void _onMessage(List<int> event) {
     final Message message = Message.fromBytes(event);
     print("target: ${message.target}: ${message.payload}");
-    switch (message.target) {
-      case 'player:track_changed':
-        final Track track = Track.fromJson(message.payload);
-        ref.read(playerProvider.notifier).update(
-              (state) => PlayerState(
-                currentTrack: track,
-                isPlaying: false,
-              ),
-            );
-        break;
-      case 'player:playing':
-        ref.read(playerProvider.notifier).update(
-              (state) => PlayerState(
-                  isPlaying: true, currentTrack: state.currentTrack),
-            );
-        break;
-      case 'player:paused':
-        ref.read(playerProvider.notifier).update(
-              (state) => PlayerState(
-                  isPlaying: false, currentTrack: state.currentTrack),
-            );
-        break;
+
+    if (message.target.startsWith('player:')) {
+      ref.read(playerProvider.notifier).handleMessage(message);
     }
   }
 
