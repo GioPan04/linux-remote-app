@@ -6,5 +6,5 @@ The client for [linux-remote](https://github.com/GioPan04/linux-remote) built in
 - [x] Remote mouse
 - [ ] Player
   - [x] Receive events
-  - [ ] Show player in notifications
+  - [x] Show player in notifications
   - [ ] Send events
