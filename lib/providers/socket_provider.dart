@@ -1,10 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linux_remote_app/models/message.dart';
-import 'package:linux_remote_app/models/track.dart';
-import 'package:linux_remote_app/providers/player_provider.dart';
 import 'package:linux_remote_app/providers/providers.dart';
 
 class SocketNotifier extends StateNotifier<Socket?> {
@@ -20,14 +19,17 @@ class SocketNotifier extends StateNotifier<Socket?> {
     try {
       final Socket socket = await Socket.connect('desktop.pangio.lan', 1234);
       state = socket;
-      socket.listen(_onMessage);
+      utf8.decoder
+          .bind(socket)
+          .transform(const LineSplitter())
+          .listen(_onMessage);
     } catch (e) {
       print("Can't connect to socket");
     }
   }
 
-  void _onMessage(List<int> event) {
-    final Message message = Message.fromBytes(event);
+  void _onMessage(String event) {
+    final Message message = Message.fromJson(jsonDecode(event));
     print("target: ${message.target}: ${message.payload}");
 
     if (message.target.startsWith('player:')) {
