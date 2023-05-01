@@ -40,4 +40,16 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
   void play() {
     _socketNotifier.sendMessage(const Message('player:play'));
   }
+
+  void togglePlay() {
+    state.isPlaying ? pause() : pause();
+  }
+
+  void previous() {
+    _socketNotifier.sendMessage(const Message('player:previous'));
+  }
+
+  void next() {
+    _socketNotifier.sendMessage(const Message('player:next'));
+  }
 }
