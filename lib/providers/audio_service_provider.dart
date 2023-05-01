@@ -12,21 +12,25 @@ class CustomAudioHandler extends BaseAudioHandler {
     ref.watch(playerProvider.notifier).addListener(_mapState);
   }
 
+  @override
   Future<void> play() async {
     print("play");
     _playerNotifier.play();
   }
 
+  @override
   Future<void> pause() async {
     print("pause");
     _playerNotifier.pause();
   }
 
+  @override
   Future<void> skipToPrevious() async {
     print("previous");
     _playerNotifier.previous();
   }
 
+  @override
   Future<void> skipToNext() async {
     print("next");
     _playerNotifier.next();
