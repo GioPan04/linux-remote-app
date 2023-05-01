@@ -1,7 +1,7 @@
-import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linux_remote_app/providers/providers.dart';
+import 'package:linux_remote_app/screens/home.dart';
 import 'package:linux_remote_app/screens/player.dart';
 import 'package:linux_remote_app/screens/remote.dart';
 import 'package:linux_remote_app/screens/splash.dart';
@@ -28,70 +28,10 @@ class MyApp extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) => const SplashScreen(),
-          '/home': (context) => const Home(),
+          '/home': (context) => const HomeScreen(),
           '/mouse': (context) => const RemoteScreen(),
           '/player': (context) => const PlayerScreen()
         },
-      ),
-    );
-  }
-}
-
-class Home extends StatefulWidget {
-  const Home({super.key});
-
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  late FocusNode _inputFocus;
-
-  @override
-  void initState() {
-    super.initState();
-    _inputFocus = FocusNode();
-  }
-
-  @override
-  void dispose() {
-    _inputFocus.dispose();
-    super.dispose();
-  }
-
-  void _showKeyboard(BuildContext context) {
-    if (_inputFocus.hasFocus) {
-      FocusScope.of(context).unfocus();
-    } else {
-      FocusScope.of(context).requestFocus(_inputFocus);
-    }
-  }
-
-  final TextEditingController controller = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Linux Remote"),
-        actions: [
-          IconButton(
-            onPressed: () => _showKeyboard(context),
-            icon: const Icon(Icons.keyboard),
-          ),
-        ],
-      ),
-      body: ListView(
-        children: [
-          ListTile(
-            title: const Text("Remote control"),
-            onTap: () => Navigator.of(context).pushNamed('/mouse'),
-          ),
-          ListTile(
-            title: const Text("Player"),
-            onTap: () => Navigator.of(context).pushNamed('/player'),
-          ),
-        ],
       ),
     );
   }
