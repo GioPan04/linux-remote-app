@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
    <application
-        android:label="linux_remote_app"
+        android:label="Linux Remote"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
