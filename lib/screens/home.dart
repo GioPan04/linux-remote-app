@@ -24,6 +24,10 @@ class _HomeScreenState extends State<HomeScreen> {
             title: const Text("Player"),
             onTap: () => Navigator.of(context).pushNamed('/player'),
           ),
+          ListTile(
+            title: const Text("Settings"),
+            onTap: () => Navigator.of(context).pushNamed('/settings'),
+          ),
         ],
       ),
     );

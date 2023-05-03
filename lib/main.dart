@@ -4,6 +4,7 @@ import 'package:linux_remote_app/providers/providers.dart';
 import 'package:linux_remote_app/screens/home.dart';
 import 'package:linux_remote_app/screens/player.dart';
 import 'package:linux_remote_app/screens/remote.dart';
+import 'package:linux_remote_app/screens/settings.dart';
 import 'package:linux_remote_app/screens/splash.dart';
 
 void main() async {
@@ -30,7 +31,8 @@ class MyApp extends StatelessWidget {
           '/': (context) => const SplashScreen(),
           '/home': (context) => const HomeScreen(),
           '/mouse': (context) => const RemoteScreen(),
-          '/player': (context) => const PlayerScreen()
+          '/player': (context) => const PlayerScreen(),
+          '/settings': (context) => const SettingsScreen()
         },
       ),
     );

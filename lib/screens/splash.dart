@@ -9,7 +9,7 @@ class SplashScreen extends ConsumerWidget {
     await ref.read(audioServiceProvider.notifier).init();
     final socketNotifier = ref.read(socketProvider.notifier);
 
-    await socketNotifier.connect();
+    await socketNotifier.connect("desktop.pangio.lan");
     // ignore: use_build_context_synchronously
     Navigator.of(context).pushReplacementNamed('/home');
   }

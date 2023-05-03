@@ -15,7 +15,13 @@ class SocketNotifier extends StateNotifier<Socket?> {
     required this.navigatorKey,
   }) : super(null);
 
-  Future<void> connect() async {
+  Future<void> connect(String address) async {
+    try {
+      await state?.close();
+    } catch (e) {
+      print("Can't close previusly connected socket, going on");
+    }
+
     try {
       final Socket socket = await Socket.connect('desktop.pangio.lan', 1234);
       state = socket;
