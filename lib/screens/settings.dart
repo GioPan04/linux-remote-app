@@ -6,13 +6,15 @@ class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   void _updateAddress(BuildContext context, WidgetRef ref) async {
-    final String address = await showDialog(
+    final String? address = await showDialog(
       context: context,
       builder: (context) => const ServerAddressDialog(),
     );
 
+    if (address?.isEmpty ?? true) return;
+
     final socketNotifier = ref.read(socketProvider.notifier);
-    await socketNotifier.connect(address);
+    await socketNotifier.connect(address!);
 
     // ignore: use_build_context_synchronously
     Navigator.of(context).popUntil((route) => route.isFirst);
