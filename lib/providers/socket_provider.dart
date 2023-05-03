@@ -25,6 +25,8 @@ class SocketNotifier extends StateNotifier<Socket?> {
           .listen(_onMessage);
     } catch (e) {
       print("Can't connect to socket");
+      print(e);
+      rethrow;
     }
   }
 

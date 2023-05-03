@@ -5,7 +5,7 @@ import 'package:linux_remote_app/providers/providers.dart';
 class SplashScreen extends ConsumerWidget {
   const SplashScreen({super.key});
 
-  void init(BuildContext context, WidgetRef ref) async {
+  Future<dynamic> init(BuildContext context, WidgetRef ref) async {
     await ref.read(audioServiceProvider.notifier).init();
     final socketNotifier = ref.read(socketProvider.notifier);
 
@@ -16,10 +16,20 @@ class SplashScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    init(context, ref);
-
-    return const Scaffold(
-      body: Center(child: CircularProgressIndicator()),
+    return Scaffold(
+      body: Center(
+        child: FutureBuilder(
+          future: init(context, ref),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Text(
+                'An error occured while connecting to the socket',
+              );
+            }
+            return const CircularProgressIndicator();
+          },
+        ),
+      ),
     );
   }
 }
