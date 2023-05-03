@@ -7,10 +7,11 @@ import 'package:linux_remote_app/providers/providers.dart';
 import 'package:linux_remote_app/providers/socket_provider.dart';
 
 class PlayerState {
-  final Track? currentTrack;
   final bool isPlaying;
+  final Track? currentTrack;
+  final double? volume;
 
-  PlayerState({this.currentTrack, this.isPlaying = false});
+  PlayerState({this.currentTrack, this.isPlaying = false, this.volume});
 }
 
 class PlayerNotifier extends StateNotifier<PlayerState> {
@@ -21,14 +22,29 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
   void handleMessage(Message message) {
     switch (message.target) {
       case 'player:paused':
-        state = PlayerState(currentTrack: state.currentTrack, isPlaying: false);
+        state = PlayerState(
+          currentTrack: state.currentTrack,
+          isPlaying: false,
+          volume: state.volume,
+        );
         break;
       case 'player:playing':
-        state = PlayerState(currentTrack: state.currentTrack, isPlaying: true);
+        state = PlayerState(
+          currentTrack: state.currentTrack,
+          isPlaying: true,
+          volume: state.volume,
+        );
+        break;
+      case 'player:volume_changed':
+        state = PlayerState(
+          currentTrack: state.currentTrack,
+          isPlaying: state.isPlaying,
+          volume: message.payload as double,
+        );
         break;
       case 'player:track_changed':
         final Track track = Track.fromJson(message.payload);
-        state = PlayerState(currentTrack: track, isPlaying: false);
+        state = PlayerState(currentTrack: track, isPlaying: state.isPlaying);
         _audioHandler.mediaItem.add(MediaItem(
           id: track.title!,
           title: track.title!,
@@ -60,5 +76,9 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
 
   void next() {
     _socketNotifier.sendMessage(const Message('player:next'));
+  }
+
+  void setVolume(double volume) {
+    _socketNotifier.sendMessage(Message('player:set_volume', volume));
   }
 }

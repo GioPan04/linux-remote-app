@@ -44,6 +44,11 @@ class PlayerScreen extends ConsumerWidget {
               ),
             ],
           ),
+          if (state.volume != null)
+            Slider(
+              value: state.volume!,
+              onChanged: player.setVolume,
+            ),
           const Spacer(),
         ],
       ),
